@@ -1,0 +1,395 @@
+string cs = @"server=DESKTOP-62NT66C\SQLEXPRESS01;database=Orgnisation;trusted_Connection=true;";
+
+    IServiceCollection servicescolection = services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(cs));
+
+ public EmployeeContext(DbContextOptions<EmployeeContext> options) : base(options)
+        {
+
+
+
+        }
+        public DbSet<Employee> employees { get; set; }
+
+     Add-Migration Initial
+
+    update-database
+
+  services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+"ConnectionStrings": {
+
+    "DefaultConnection": "server=DESKTOP-62NT66C\\SQLEXPRESS01;database=GSBV;trusted_Connection=true;MultipleActiveResultSets=True"
+
+
+
+ public DataDbContext(DbContextOptions<DataDbContext>options) : base(options)
+        {
+
+        }
+        public DbSet<Student> Students { get; set; }
+ private readonly ApplicationDbContext dbContext;  
+        private readonly IWebHostEnvironment webHostEnvironment;  
+        public HomeController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)  
+        {  
+            dbContext = context;  
+            webHostEnvironment = hostEnvironment;  
+        }  
+  
+        public async Task<IActionResult> Index()  
+        {  
+            var employee = await dbContext.Employees.ToListAsync();  
+            return View(employee);  
+        }  
+  
+        public IActionResult New()  
+        {  
+            return View();  
+        }  
+  
+        [HttpPost]  
+        [ValidateAntiForgeryToken]  
+        public async Task<IActionResult> New(EmployeeViewModel model)  
+        {  
+            if (ModelState.IsValid)  
+            {  
+                string uniqueFileName = UploadedFile(model);  
+  
+                Employee employee = new Employee  
+                {  
+                    FirstName = model.FirstName,  
+                  
+                    ProfilePicture = uniqueFileName,  
+                };  
+                dbContext.Add(employee);  
+                await dbContext.SaveChangesAsync();  
+                return RedirectToAction(nameof(Index));  
+            }  
+            return View();  
+        }  
+  
+        private string UploadedFile(EmployeeViewModel model)  
+        {  
+            string uniqueFileName = null;  
+  
+            if (model.ProfileImage != null)  
+            {  
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");  
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileImage.FileName;  
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);  
+                using (var fileStream = new FileStream(filePath, FileMode.Create))  
+                {  
+                    model.ProfileImage.CopyTo(fileStream);  
+                }  
+ private readonly DataContext _Context;
+
+        public CourseController1(DataContext context)
+        {
+            _Context = context;
+        }
+
+
+
+
+        /// <summary>
+        /// Get Section of Courses Model
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+
+        public IActionResult Index()
+        {
+            var courses = _Context.Courses.ToList();
+
+            return View(courses);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+
+            return View();
+
+
+        }
+        [HttpGet]
+
+
+        public IActionResult Details(int Id)
+        {
+
+            var Course = _Context.Courses.Where(x => x.Id == Id).FirstOrDefault();
+
+            return View(Course);
+
+        }
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+
+            var Course = _Context.Courses.Where(x => x.Id == Id).FirstOrDefault();
+
+            return View(Course);
+
+        }
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
+
+            var Course = _Context.Courses.Where(x => x.Id == Id).FirstOrDefault();
+
+            return View(Course);
+
+        }
+
+
+        /// <summary>
+        /// Post Section of Courses Model
+        /// </summary>
+        /// <returns></returns>
+
+        [HttpPost]
+        public IActionResult Create(Course Model)
+        {
+            _Context.Courses.Add(Model);
+
+            _Context.SaveChanges();
+            return RedirectToAction("index");
+
+
+
+        }
+        [HttpPost]
+        public IActionResult Edit(Course Model)
+        {
+            _Context.Courses.Update(Model);
+
+            _Context.SaveChanges();
+            return RedirectToAction("index");
+
+
+
+        }
+        [HttpPost]
+        public IActionResult Delete(Course Model)
+        {
+            _Context.Courses.Remove(Model);
+
+
+            _Context.SaveChanges();
+            return RedirectToAction("index");
+
+
+
+        }
+
+ <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.0" />
+ <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+https://dotnettutorials.net/lesson/area-of-triangle-csharp/
+
+Logic to Calculate the Surface Area of Cube in C#  
+
+First, we will define variable, Side, Area.
+Then we will calculate the surface area of the cube by formula. 6* Side * Side
+And the result will be store in Area.
+public IActionResult Index(string SortOrde, string SortBy)
+        {
+            ViewBag.SortOrde = "SortOrde";
+            var items = _context.Tbl_Courses.ToList();
+            switch (SortBy)
+            {
+                case "FirstName":
+                    {
+
+                        switch (SortOrde)
+                        {
+                            case "Asc":
+                                {
+
+                                    items = items.OrderBy(x => x.FirstName).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+
+                                    items = items.OrderByDescending(x => x.FirstName).ToList();
+                                    break;
+                                }
+
+
+
+                            default:
+                                {
+                                    items = items.OrderBy(x => x.FirstName).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Title":
+                    {
+
+                        switch (SortOrde)
+                        {
+                            case "Asc":
+                                {
+
+                                    items = items.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+
+                                    items = items.OrderByDescending(x => x.Title).ToList();
+                                    break;
+                                }
+
+
+
+                            default:
+                                {
+                                    items = items.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Discription":
+                    {
+
+                        switch (SortOrde)
+                        {
+                            case "Asc":
+                                {
+
+                                    items = items.OrderBy(x => x.Discription).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+
+                                    items = items.OrderByDescending(x => x.Discription).ToList();
+                                    break;
+                                }
+
+
+
+                            default:
+                                {
+                                    items = items.OrderBy(x => x.Discription).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Gender":
+                    {
+
+                        switch (SortOrde)
+                        {
+                            case "Asc":
+                                {
+
+                                    items = items.OrderBy(x => x.Gender).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+
+                                    items = items.OrderByDescending(x => x.Gender).ToList();
+                                    break;
+                                }
+
+
+
+                            default:
+                                {
+                                    items = items.OrderBy(x => x.Gender).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+
+
+
+
+
+
+
+            }
+            return View(items);
+        }
+
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" onclick="return ConfermDelete()">Delete</a>
+<script>
+    function ConfermDelete() {
+        return confirm("Are you sure You want to  deleted this");
+
+    }
+
+</script>
+<form asp-action="Index">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 ">
+                <div class="form-group  form-inline ">
+                    <label>  </label>
+                    <input type="text" name="SearchCourseName" class="form-control" placeholder="Search " /><br>
+                    <div class="col-sm-4"><input type="submit" value="Search" class="btn btn-block btn-primary " /> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+[HttpPost]
+        public IActionResult Create(StudentViewModel vm)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+
+                string stringFileName = UploadFile(vm);
+
+                var product = new Student
+
+                {
+                    Name = vm.Name,
+                    StudentImage = stringFileName
+
+                };
+                _context.Students.Add(product);
+                _context.SaveChanges();
+
+                return RedirectToAction("index");
+
+            }
+            return View(vm);
+
+
+        }
+        private string UploadFile(StudentViewModel vm)
+        {
+
+            string fileName = null;
+            if (vm.StudentImage != null)
+            {
+                string uploadDir = Path.Combine(_WebhostEnvironment.WebRootPath, "Images");
+                fileName = Guid.NewGuid().ToString() + "_" + vm.StudentImage.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                using var fileStream = new FileStream(filePath, FileMode.Create);
+                vm.StudentImage.CopyTo(fileStream);
+
+
+
+            }
+            return fileName;
+
+
+
+        }
+
+
